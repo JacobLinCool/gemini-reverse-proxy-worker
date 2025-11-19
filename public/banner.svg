@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg-grad" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0f172a" /> <!-- Slate 900 -->
+      <stop offset="100%" stop-color="#020617" /> <!-- Slate 950 -->
+    </linearGradient>
+
+    <!-- Gemini Gradient (Blue/Purple) -->
+    <linearGradient id="gemini-grad" x1="0" y1="0" x2="400" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4facfe" />
+      <stop offset="50%" stop-color="#a18cd1" />
+      <stop offset="100%" stop-color="#fbc2eb" />
+    </linearGradient>
+
+    <!-- Shield Gradient (Orange/Pink) -->
+    <linearGradient id="shield-grad" x1="0" y1="0" x2="400" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#db2777" />
+    </linearGradient>
+
+    <!-- Grid Pattern for Tech feel -->
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#334155" stroke-width="1" opacity="0.3" />
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg-grad)" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+
+  <!-- ==============================
+       THE ICON (Left Side)
+       Scaled and positioned
+       ============================== -->
+  <g transform="translate(120, 135) scale(0.8)">
+    <!-- Glow Effect behind Star -->
+    <circle cx="256" cy="256" r="160" fill="#4facfe" opacity="0.15" filter="blur(40px)" />
+
+    <!-- The Gemini Star -->
+    <path
+      d="M256 80 C 256 210, 256 236, 412 256 C 256 256, 256 280, 256 432 C 256 280, 256 256, 100 256 C 256 256, 256 210, 256 80 Z"
+      fill="url(#gemini-grad)" />
+
+    <!-- Top Right Arrow (Shield) -->
+    <path d="M360 140 A 160 160 0 0 1 416 256" stroke="url(#shield-grad)" stroke-width="28" stroke-linecap="round" />
+    <path d="M256 96 A 160 160 0 0 1 330 115" stroke="url(#shield-grad)" stroke-width="28" stroke-linecap="round"
+      opacity="0.6" />
+
+    <!-- Bottom Left Arrow (Shield) -->
+    <path d="M152 372 A 160 160 0 0 1 96 256" stroke="url(#shield-grad)" stroke-width="28" stroke-linecap="round" />
+    <path d="M256 416 A 160 160 0 0 1 182 397" stroke="url(#shield-grad)" stroke-width="28" stroke-linecap="round"
+      opacity="0.6" />
+
+    <!-- JWT Dots -->
+    <circle cx="416" cy="256" r="10" fill="#fff" />
+    <circle cx="96" cy="256" r="10" fill="#fff" />
+  </g>
+
+  <!-- ==============================
+       TYPOGRAPHY (Right Side)
+       ============================== -->
+  <g transform="translate(500, 0)">
+
+    <!-- Eyebrow: Platform -->
+    <text x="0" y="230" font-family="sans-serif" font-weight="600" font-size="24" fill="#94a3b8" letter-spacing="2">
+      CLOUDFLARE WORKERS
+    </text>
+
+    <!-- Main Title: Line 1 -->
+    <text x="0" y="300" font-family="sans-serif" font-weight="800" font-size="72" fill="#ffffff">
+      Gemini API
+    </text>
+
+    <!-- Main Title: Line 2 (Gradient Text effect using Mask or Fill) -->
+    <!-- SVG text gradient is simple with fill -->
+    <text x="0" y="380" font-family="sans-serif" font-weight="800" font-size="72" fill="url(#shield-grad)">
+      Reverse Proxy
+    </text>
+
+    <!-- Divider Line -->
+    <line x1="0" y1="420" x2="100" y2="420" stroke="#4facfe" stroke-width="6" stroke-linecap="round" />
+
+    <!-- Features List -->
+    <g transform="translate(0, 470)" font-family="sans-serif" font-size="28" fill="#cbd5e1">
+      <text x="0" y="0">🔒 Secure JWT Auth</text>
+      <text x="280" y="0">⚡ Load Balancing</text>
+      <text x="0" y="50">🚀 Easy Integration</text>
+    </g>
+  </g>
+
+  <!-- Decorative Bottom Bar -->
+  <rect x="0" y="620" width="1200" height="10" fill="url(#gemini-grad)" />
+
+</svg>

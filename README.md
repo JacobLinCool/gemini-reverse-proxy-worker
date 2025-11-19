@@ -1,6 +1,35 @@
 # Gemini Reverse Proxy Worker
 
+<img src="public/favicon.svg" alt="Gemini Reverse Proxy Worker Icon" width="100" height="100" align="right" />
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A Cloudflare Worker that acts as a reverse proxy for the Google Gemini API, supporting both API keys (Google AI Studio) and service account (Vertex AI) authentication.
+This simplifies API access with load balancing, JWT validation, and seamless integration with Cloudflare AI Gateway.
+
+## Table of Contents
+
+- [Gemini Reverse Proxy Worker](#gemini-reverse-proxy-worker)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+    - [GEMINI\_API\_KEY](#gemini_api_key)
+    - [GEMINI\_API\_BASE\_URL (Optional)](#gemini_api_base_url-optional)
+    - [CLIENT\_KEY\_VALIDATION\_SECRET (Optional)](#client_key_validation_secret-optional)
+  - [Usage](#usage)
+    - [Development](#development)
+    - [Testing](#testing)
+    - [Deployment](#deployment)
+  - [API Usage](#api-usage)
+    - [Example Request](#example-request)
+    - [Supported Endpoints](#supported-endpoints)
+  - [Client Key Validation](#client-key-validation)
+  - [Load Balancing](#load-balancing)
+  - [Contributing](#contributing)
+  - [Issues](#issues)
+  - [License](#license)
 
 ## Features
 
@@ -156,6 +185,14 @@ The JWT is signed with HMAC-SHA256 using the validation secret.
 ## Load Balancing
 
 The worker automatically shuffles configured keys for each request to distribute load evenly. If a key fails (non-2xx response), it tries the next key. If all keys fail, it returns a 500 error.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Issues
+
+If you encounter any issues, please report them on the [GitHub Issues](https://github.com/JacobLinCool/gemini-reverse-proxy-worker/issues) page.
 
 ## License
 

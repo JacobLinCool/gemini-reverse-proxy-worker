@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <!-- Background Gradient: Deep Space -->
+    <linearGradient id="bg-grad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+
+    <!-- Gemini Gradient: Blue to Purple -->
+    <linearGradient id="gemini-grad" x1="100" y1="100" x2="412" y2="412" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4facfe" />
+      <stop offset="50%" stop-color="#a18cd1" />
+      <stop offset="100%" stop-color="#fbc2eb" />
+    </linearGradient>
+
+    <!-- Worker/Security Accent: Orange to Red -->
+    <linearGradient id="shield-grad" x1="0" y1="0" x2="512" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f97316" /> <!-- Cloudflare Orange -->
+      <stop offset="100%" stop-color="#db2777" />
+    </linearGradient>
+  </defs>
+
+  <!-- Container -->
+  <rect width="512" height="512" rx="120" fill="url(#bg-grad)" />
+
+  <!-- The Gemini Star (Central Logic) -->
+  <path
+    d="M256 110 C 256 230, 256 256, 402 256 C 256 256, 256 280, 256 402 C 256 280, 256 256, 110 256 C 256 256, 256 230, 256 110 Z"
+    fill="url(#gemini-grad)" filter="drop-shadow(0 0 20px rgba(161, 140, 209, 0.4))" />
+
+  <!-- The Proxy Shield/Cycle (Outer Layer) -->
+  <!-- Top Right Arrow -->
+  <path d="M360 140 A 160 160 0 0 1 416 256" stroke="url(#shield-grad)" stroke-width="32" stroke-linecap="round" />
+  <path d="M256 96 A 160 160 0 0 1 330 115" stroke="url(#shield-grad)" stroke-width="32" stroke-linecap="round"
+    opacity="0.6" />
+
+  <!-- Bottom Left Arrow -->
+  <path d="M152 372 A 160 160 0 0 1 96 256" stroke="url(#shield-grad)" stroke-width="32" stroke-linecap="round" />
+  <path d="M256 416 A 160 160 0 0 1 182 397" stroke="url(#shield-grad)" stroke-width="32" stroke-linecap="round"
+    opacity="0.6" />
+
+  <!-- Security Dots (JWT Nodes) -->
+  <circle cx="416" cy="256" r="12" fill="#fff" />
+  <circle cx="96" cy="256" r="12" fill="#fff" />
+
+</svg>
