@@ -4,20 +4,143 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Gemini API Reverse Proxy</title>
+        <link rel="stylesheet" href="app.css" />
+        <script src="script.js" defer></script>
     </head>
+
     <body>
-        <h1>🚀 Gemini API Reverse Proxy</h1>
-        <p>
-            A reverse proxy for the Google Gemini API, running on Cloudflare
-            Workers.
-        </p>
-        <p>
-            <a
-                href="https://github.com/JacobLinCool/gemini-reverse-proxy-worker"
-                target="_blank"
-                rel="noopener noreferrer"
-                >GitHub Repository</a
-            >
-        </p>
+        <div class="container">
+            <h1>Gemini API Reverse Proxy</h1>
+            <p>
+                A reverse proxy for the Google Gemini API, running on Cloudflare
+                Workers.
+            </p>
+            <p>
+                <a
+                    href="https://github.com/JacobLinCool/gemini-reverse-proxy-worker"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >GitHub Repository</a
+                >
+            </p>
+
+            <div class="section">
+                <h2>Usage Example</h2>
+
+                <p>Install the Google Generative AI SDK:</p>
+                <pre><code>npm install @google/genai</code></pre>
+
+                <p>Generate API Key (JWT):</p>
+                <div class="info-box jwt-generator">
+                    <form
+                        class="jwt-form"
+                        onsubmit="return false;"
+                        aria-describedby="jwt-help"
+                    >
+                        <div class="form-row">
+                            <label class="form-label" for="secret"
+                                >Secret</label
+                            >
+                            <input
+                                id="secret"
+                                class="form-input"
+                                type="password"
+                                placeholder="signing secret (kept in your browser)"
+                                autocomplete="off"
+                            />
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label" for="startDatetime"
+                                >Starts at</label
+                            >
+                            <input
+                                id="startDatetime"
+                                class="form-input"
+                                type="datetime-local"
+                            />
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label" for="endDatetime"
+                                >Ends at</label
+                            >
+                            <input
+                                id="endDatetime"
+                                class="form-input"
+                                type="datetime-local"
+                            />
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label" for="note">Note</label>
+                            <input
+                                id="note"
+                                class="form-input"
+                                type="text"
+                                placeholder="Optional note (stored in token)"
+                            />
+                        </div>
+
+                        <div class="form-actions">
+                            <button id="generate" class="btn primary">
+                                Generate JWT
+                            </button>
+                            <button
+                                id="copyJwt"
+                                class="btn"
+                                style="display: none"
+                            >
+                                Copy
+                            </button>
+                        </div>
+                    </form>
+
+                    <div
+                        id="signedResult"
+                        class="token-output"
+                        style="display: none"
+                        aria-live="polite"
+                    >
+                        <pre><code id="signedCode" class="token-code"></code></pre>
+                    </div>
+                </div>
+
+                <p>Use the proxy in your code:</p>
+                <pre><code id="codeExample">import { GoogleGenAI } from "@google/genai";
+
+const client = new GoogleGenAI({
+    apiKey: "YOUR_API_KEY_HERE",
+    httpOptions: {
+        baseUrl: "https://your-worker.workers.dev/",
+    },
+});
+
+(async () => {
+    const response = await client.models.generateContent({
+        model: "gemini-2.5-pro",
+        contents: ["hi"],
+    });
+    console.log(JSON.stringify(response, null, 2));
+})();</code></pre>
+            </div>
+
+            <div class="section">
+                <h2>Test Request</h2>
+                <p>
+                    Try a simple test request to the proxy. The button attempts
+                    a request from the browser.
+                </p>
+                <div class="info-box">
+                    <button class="btn primary" id="testRequest">
+                        Run Test Request
+                    </button>
+                </div>
+                <pre
+                    id="testResult"
+                    style="display: none"
+                ><code id="testOutput"></code></pre>
+            </div>
+        </div>
     </body>
 </html>
