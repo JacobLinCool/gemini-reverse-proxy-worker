@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { parseConfig } from "./config";
+import { parseConfig, updateConfig } from "./config";
+import { getStorage } from "./storage";
 import type { Credential } from "./types";
 import { hashKey, validateClientKey } from "./utils";
 import { getAccessToken, rewritePathForVertexAI } from "./vertexai";
@@ -9,6 +10,59 @@ const app = new Hono<{ Bindings: CloudflareBindings }>();
 
 // Enable CORS for all routes
 app.use("/*", cors());
+
+// Update configuration
+app.post("/_config", async (c) => {
+    const secret = c.env.CLIENT_KEY_VALIDATION_SECRET;
+    if (!secret) {
+        return c.json({ error: "Update not allowed" }, 403);
+    }
+
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader || authHeader !== `Bearer ${secret}`) {
+        return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    const storage = getStorage(c.env);
+    if (storage.readonly) {
+        return c.json({ error: "Storage is read-only" }, 403);
+    }
+
+    try {
+        const data = await c.req.json();
+        await updateConfig(c.env, data);
+        return c.json({ success: true });
+    } catch (error) {
+        return c.json({ error: (error as Error).message }, 500);
+    }
+});
+
+// Get configuration
+app.get("/_config", async (c) => {
+    const secret = c.env.CLIENT_KEY_VALIDATION_SECRET;
+    if (!secret) {
+        return c.json({ error: "Read not allowed" }, 403);
+    }
+
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader || authHeader !== `Bearer ${secret}`) {
+        return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    try {
+        const config = await parseConfig(c.env);
+        const storage = getStorage(c.env);
+
+        // Convert Config to ConfigData format for response
+        const keys = config.keys.map((k) =>
+            typeof k.key === "string" ? k.key : JSON.stringify(k.key),
+        );
+        const baseUrls = config.keys.map((k) => k.baseUrl);
+        return c.json({ keys, baseUrls, readonly: storage.readonly });
+    } catch (error) {
+        return c.json({ error: (error as Error).message }, 500);
+    }
+});
 
 // Get authorization header for a key
 async function getAuthHeader(

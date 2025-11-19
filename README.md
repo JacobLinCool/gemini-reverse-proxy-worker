@@ -10,30 +10,32 @@ This simplifies API access with load balancing, JWT validation, and seamless int
 ## Table of Contents
 
 - [Gemini Reverse Proxy Worker](#gemini-reverse-proxy-worker)
-  - [Table of Contents](#table-of-contents)
-  - [Features](#features)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
-    - [GEMINI\_API\_KEY](#gemini_api_key)
-    - [GEMINI\_API\_BASE\_URL (Optional)](#gemini_api_base_url-optional)
-    - [CLIENT\_KEY\_VALIDATION\_SECRET (Optional)](#client_key_validation_secret-optional)
-  - [Usage](#usage)
-    - [Development](#development)
-    - [Testing](#testing)
-    - [Deployment](#deployment)
-  - [API Usage](#api-usage)
-    - [Example Request](#example-request)
-    - [Supported Endpoints](#supported-endpoints)
-  - [Client Key Validation](#client-key-validation)
-  - [Load Balancing](#load-balancing)
-  - [Contributing](#contributing)
-  - [Issues](#issues)
-  - [License](#license)
+    - [Table of Contents](#table-of-contents)
+    - [Features](#features)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Configuration](#configuration)
+        - [GEMINI_API_KEY](#gemini_api_key)
+        - [GEMINI_API_BASE_URL (Optional)](#gemini_api_base_url-optional)
+        - [CLIENT_KEY_VALIDATION_SECRET (Optional)](#client_key_validation_secret-optional)
+    - [Usage](#usage)
+        - [Development](#development)
+        - [Testing](#testing)
+        - [Deployment](#deployment)
+    - [API Usage](#api-usage)
+        - [Example Request](#example-request)
+        - [Supported Endpoints](#supported-endpoints)
+    - [Client Key Validation](#client-key-validation)
+    - [Load Balancing](#load-balancing)
+    - [Contributing](#contributing)
+    - [Issues](#issues)
+    - [License](#license)
 
 ## Features
 
 - **Multi-Key Support**: Configure multiple API keys or service accounts for load balancing and failover.
+- **Runtime Configuration**: Update API keys and base URLs at runtime without redeploying (using Cloudflare KV or D1).
+- **Admin Dashboard**: Built-in dashboard for managing configurations.
 - **Authentication Methods**: Supports both Google AI Studio API keys and Vertex AI service account credentials.
 - **Load Balancing**: Automatically distributes requests across configured keys to avoid rate limits.
 - **Client Key Validation**: Optional JWT-based validation of client-provided API keys.
@@ -106,6 +108,32 @@ GEMINI_API_BASE_URL=https://gateway.ai.cloudflare.com/v1/xxx/yyy/google-ai-studi
 ### CLIENT_KEY_VALIDATION_SECRET (Optional)
 
 A secret key to enable JWT validation of client-provided API keys. If set, clients must provide a valid JWT in the `x-goog-api-key` header.
+
+**This secret is also used to secure the Configuration Dashboard and API.**
+
+### Storage Backend (Optional)
+
+To enable runtime configuration updates, configure a storage backend in `wrangler.jsonc` (or `wrangler.toml`):
+
+- **KV Storage**: Bind a KV Namespace to `KV_STORAGE`.
+- **D1 Storage**: Bind a D1 Database to `D1_STORAGE`.
+
+If neither is configured, the worker defaults to using environment variables (read-only).
+
+## Runtime Configuration
+
+You can manage API keys and base URLs at runtime using the built-in dashboard or API.
+
+### Dashboard
+
+Access the dashboard at `/dash.html`. You will need to enter your `CLIENT_KEY_VALIDATION_SECRET` to authenticate.
+
+### API
+
+- **GET /\_config**: Retrieve current configuration.
+- **POST /\_config**: Update configuration.
+
+Both endpoints require the `Authorization: Bearer <CLIENT_KEY_VALIDATION_SECRET>` header.
 
 ## Usage
 

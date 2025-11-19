@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Gemini API Proxy Dashboard</title>
+        <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+        <link rel="stylesheet" href="app.css" />
+        <script src="dash.js" defer></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1><a href="/">Gemini API Proxy</a> / Dashboard</h1>
+
+            <div class="section" style="margin-top: 0">
+                <h2>Configuration Manager</h2>
+                <p>
+                    Manage the API keys and base URLs used by the proxy.
+                    Requires the <code>CLIENT_KEY_VALIDATION_SECRET</code>.
+                </p>
+
+                <div class="info-box">
+                    <div class="form-row" style="margin-bottom: 15px">
+                        <label class="form-label" for="adminSecret"
+                            >Admin Secret</label
+                        >
+                        <input
+                            id="adminSecret"
+                            class="form-input"
+                            type="password"
+                            placeholder="CLIENT_KEY_VALIDATION_SECRET"
+                            autocomplete="off"
+                        />
+                    </div>
+                    <div class="form-actions">
+                        <button id="loadConfig" class="btn primary">
+                            Load Configuration
+                        </button>
+                    </div>
+                </div>
+
+                <div id="configEditor" style="display: none">
+                    <div class="info-box">
+                        <h3>Configuration Items</h3>
+                        <p class="muted">
+                            Manage your API keys and their corresponding base
+                            URLs.
+                        </p>
+
+                        <div id="configList" class="config-list">
+                            <!-- Items will be injected here -->
+                        </div>
+
+                        <div class="form-actions" style="margin-top: 15px">
+                            <button id="addConfigItem" class="btn">
+                                + Add Item
+                            </button>
+                            <button id="saveConfig" class="btn primary">
+                                Save Configuration
+                            </button>
+                            <span id="configStatus" class="muted"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <template id="configItemTemplate">
+                    <div class="config-item">
+                        <div class="form-row">
+                            <input
+                                type="text"
+                                class="form-input config-key"
+                                placeholder="API Key / Service Account JSON"
+                            />
+                        </div>
+                        <div class="form-row">
+                            <input
+                                type="text"
+                                class="form-input config-base-url"
+                                placeholder="Base URL (e.g. https://generativelanguage.googleapis.com/)"
+                            />
+                        </div>
+                        <button
+                            class="btn danger remove-item"
+                            title="Remove Item"
+                        >
+                            &times;
+                        </button>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </body>
+</html>
