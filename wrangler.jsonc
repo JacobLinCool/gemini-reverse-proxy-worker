@@ -4,7 +4,7 @@
  */
 {
     "$schema": "node_modules/wrangler/config-schema.json",
-    "name": "gemini-reverse-proxy",
+    "name": "gemini-proxy",
     "main": "src/index.ts",
     "compatibility_date": "2025-11-15",
     "assets": {
