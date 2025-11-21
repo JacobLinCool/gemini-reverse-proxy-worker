@@ -86,6 +86,7 @@
       <text x="0" y="0">🔒 Secure JWT Auth</text>
       <text x="280" y="0">⚡ Load Balancing</text>
       <text x="0" y="50">🚀 Easy Integration</text>
+      <text x="280" y="50">🛡️ Endpoint Restrictions</text>
     </g>
   </g>
 

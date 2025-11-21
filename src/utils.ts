@@ -1,4 +1,22 @@
-import { Credential } from "./types";
+import { ClientKeyPayload, Credential } from "./types";
+
+function isClientKeyPayload(payload: unknown): payload is ClientKeyPayload {
+    if (!payload || typeof payload !== "object") {
+        return false;
+    }
+
+    const data = payload as Record<string, unknown>;
+    const hasTimestamps =
+        typeof data.exp === "number" && typeof data.nbf === "number";
+    const hasAllowedEndpoints =
+        data.allowed_endpoints === undefined ||
+        (Array.isArray(data.allowed_endpoints) &&
+            data.allowed_endpoints.every(
+                (endpoint) => typeof endpoint === "string",
+            ));
+
+    return hasTimestamps && hasAllowedEndpoints;
+}
 
 export async function hashKey(key: string | Credential): Promise<string> {
     const hashBuffer = await crypto.subtle.digest(
@@ -15,10 +33,10 @@ export async function hashKey(key: string | Credential): Promise<string> {
 export async function validateClientKey(
     key: string,
     secret: string,
-): Promise<boolean> {
+): Promise<ClientKeyPayload | null> {
     const parts = key.split(".");
     if (parts.length !== 3) {
-        return false;
+        return null;
     }
 
     let [headerB64, payloadB64, signatureB64] = parts;
@@ -30,7 +48,10 @@ export async function validateClientKey(
         return b;
     };
     const payloadJson = atob(toBase64(payloadB64));
-    const payload = JSON.parse(payloadJson);
+    const payload: unknown = JSON.parse(payloadJson);
+    if (!isClientKeyPayload(payload)) {
+        return null;
+    }
     const now = Math.floor(Date.now() / 1000);
     if (
         !payload.exp ||
@@ -38,7 +59,7 @@ export async function validateClientKey(
         now > payload.exp ||
         now < payload.nbf
     ) {
-        return false;
+        return null;
     }
 
     // validate signature
@@ -64,5 +85,5 @@ export async function validateClientKey(
         data,
     );
 
-    return isValid;
+    return isValid ? payload : null;
 }

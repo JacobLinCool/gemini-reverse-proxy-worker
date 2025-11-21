@@ -17,8 +17,8 @@
     "kv_namespaces": [
         {
             "binding": "KV_STORAGE",
-            "id": "9caf3cd56907481b8a61fa05e7920894"
-        }
+            "id": "9caf3cd56907481b8a61fa05e7920894",
+        },
     ],
     /**
      * Smart Placement

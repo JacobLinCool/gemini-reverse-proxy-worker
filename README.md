@@ -10,36 +10,41 @@ This simplifies API access with load balancing, JWT validation, and seamless int
 ## Table of Contents
 
 - [Gemini Reverse Proxy Worker](#gemini-reverse-proxy-worker)
-    - [Table of Contents](#table-of-contents)
-    - [Features](#features)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-    - [Configuration](#configuration)
-        - [GEMINI_API_KEY](#gemini_api_key)
-        - [GEMINI_API_BASE_URL (Optional)](#gemini_api_base_url-optional)
-        - [CLIENT_KEY_VALIDATION_SECRET (Optional)](#client_key_validation_secret-optional)
-    - [Usage](#usage)
-        - [Development](#development)
-        - [Testing](#testing)
-        - [Deployment](#deployment)
-    - [API Usage](#api-usage)
-        - [Example Request](#example-request)
-        - [Supported Endpoints](#supported-endpoints)
-    - [Client Key Validation](#client-key-validation)
-    - [Load Balancing](#load-balancing)
-    - [Contributing](#contributing)
-    - [Issues](#issues)
-    - [License](#license)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+    - [GEMINI\_API\_KEY](#gemini_api_key)
+    - [GEMINI\_API\_BASE\_URL (Optional)](#gemini_api_base_url-optional)
+    - [CLIENT\_KEY\_VALIDATION\_SECRET (Optional)](#client_key_validation_secret-optional)
+    - [Storage Backend (Optional)](#storage-backend-optional)
+  - [Runtime Configuration](#runtime-configuration)
+    - [Dashboard](#dashboard)
+    - [API](#api)
+  - [Usage](#usage)
+    - [Development](#development)
+    - [Testing](#testing)
+    - [Deployment](#deployment)
+  - [API Usage](#api-usage)
+    - [Example Request](#example-request)
+    - [Supported Endpoints](#supported-endpoints)
+  - [Client Key Validation](#client-key-validation)
+  - [Load Balancing](#load-balancing)
+  - [Contributing](#contributing)
+  - [Issues](#issues)
+  - [License](#license)
 
 ## Features
 
 - **Multi-Key Support**: Configure multiple API keys or service accounts for load balancing and failover.
-- **Runtime Configuration**: Update API keys and base URLs at runtime without redeploying (using Cloudflare KV or D1).
-- **Admin Dashboard**: Built-in dashboard for managing configurations.
 - **Authentication Methods**: Supports both Google AI Studio API keys and Vertex AI service account credentials.
 - **Load Balancing**: Automatically distributes requests across configured keys to avoid rate limits.
 - **Client Key Validation**: Optional JWT-based validation of client-provided API keys.
+- **Endpoint Restrictions**: Restrict access to specific endpoints using regex patterns in JWT.
 - **CORS Enabled**: Supports cross-origin requests.
+- **Admin Dashboard**: Built-in dashboard for managing configurations.
+- **Runtime Configuration**: Update API keys and base URLs at runtime without redeploying (using Cloudflare KV or D1).
 - **AI Gateway Integration**: Includes metadata headers for Cloudflare AI Gateway analytics.
 - **Error Handling**: Graceful fallback and error reporting when keys fail.
 
@@ -207,6 +212,7 @@ The JWT payload must include:
 
 - `exp`: Expiration timestamp
 - `nbf`: Not before timestamp
+- `allowed_endpoints` (optional): Array of regex patterns to restrict access (default: `['.*']`)
 
 The JWT is signed with HMAC-SHA256 using the validation secret.
 

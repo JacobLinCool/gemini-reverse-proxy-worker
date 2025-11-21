@@ -19,3 +19,9 @@ export interface KeyConfig {
 export interface Config {
     keys: KeyConfig[];
 }
+
+export interface ClientKeyPayload {
+    exp: number;
+    nbf: number;
+    allowed_endpoints?: string[];
+}

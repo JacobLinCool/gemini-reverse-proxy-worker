@@ -114,7 +114,31 @@ genBtn.addEventListener("click", async () => {
     try {
         const header = { alg: "HS256", typ: "JWT" };
         const providedNote = noteEl && noteEl.value ? noteEl.value : "";
-        const payload = { nbf, exp, note: providedNote };
+
+        let allowedEndpoints = [".*"];
+        const allowedEndpointsEl = document.getElementById("allowedEndpoints");
+        if (allowedEndpointsEl && allowedEndpointsEl.value) {
+            try {
+                const parsed = JSON.parse(allowedEndpointsEl.value);
+                if (Array.isArray(parsed)) {
+                    allowedEndpoints = parsed;
+                } else {
+                    throw new Error("Allowed endpoints must be a JSON array");
+                }
+            } catch (e) {
+                signedResult.style.display = "block";
+                signedCode.textContent =
+                    "Error parsing allowed endpoints: " + e.message;
+                return;
+            }
+        }
+
+        const payload = {
+            nbf,
+            exp,
+            note: providedNote,
+            allowed_endpoints: allowedEndpoints,
+        };
 
         const unsigned =
             base64UrlEncode(JSON.stringify(header)) +

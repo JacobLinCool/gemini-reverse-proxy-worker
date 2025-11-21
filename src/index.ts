@@ -93,12 +93,21 @@ app.all("/*", async (c) => {
     }
 
     if (c.env.CLIENT_KEY_VALIDATION_SECRET) {
-        const isValid = await validateClientKey(
+        const payload = await validateClientKey(
             clientKey,
             c.env.CLIENT_KEY_VALIDATION_SECRET,
         );
-        if (!isValid) {
+        if (!payload) {
             return c.json({ error: "Invalid API key" }, 403);
+        }
+
+        const allowedEndpoints: string[] = payload.allowed_endpoints || [".*"];
+        const isAllowed = allowedEndpoints.some((pattern) =>
+            new RegExp(pattern).test(path),
+        );
+
+        if (!isAllowed) {
+            return c.json({ error: "Endpoint not allowed" }, 403);
         }
     }
 
